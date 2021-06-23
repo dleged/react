@@ -94,7 +94,18 @@ export type Fiber = {|
   // alternate versions of the tree. We put this on a single object for now to
   // minimize the number of objects created during the initial render.
 
-  // Tag identifying the type of fiber.
+
+  //第一个字段在概念上是Instance的成员。这用来
+  //被分割成一个单独的类型，并与其他Fiber字段相交，
+  //但是在Flow修复它的交集bug之前，我们已经将它们合并成
+  //单类型。
+
+  //一个实例在组件的所有版本之间共享。我们可以很容易的
+  //将它分解为一个单独的对象，以避免向
+  //树的替代版本。我们把它放在一个物体上
+  //最小化初始渲染期间创建的对象数量。
+
+  //标识光纤类型的标签。
   tag: WorkTag,
 
   // Unique identifier of this child.

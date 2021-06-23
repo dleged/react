@@ -31,21 +31,28 @@ export type PendingInteractionMap = Map<ExpirationTime, Set<Interaction>>;
 
 type BaseFiberRootProperties = {|
   // Any additional information from the host associated with this root.
+  //与这个根相关联的主机的任何附加信息。
   containerInfo: any,
   // Used only by persistent updates.
+  //仅用于持久更新。
   pendingChildren: any,
   // The currently active root fiber. This is the mutable root of the tree.
+  // 当前活动的根纤维。这是树的可变根。
   current: Fiber,
 
   // The following priority levels are used to distinguish between 1)
   // uncommitted work, 2) uncommitted work that is suspended, and 3) uncommitted
   // work that may be unsuspended. We choose not to track each individual
   // pending level, trading granularity for performance.
-  //
   // The earliest and latest priority levels that are suspended from committing.
+  //以下优先级用于区分
+  //1)未提交的工作;2)未提交的工作暂停;3)未提交的工作可以不暂停的工作。我们选择不追踪每个人
+  //挂起级别，以粒度换取性能。
+  //提交时被挂起的最早和最近的优先级级别。
   earliestSuspendedTime: ExpirationTime,
   latestSuspendedTime: ExpirationTime,
   // The earliest and latest priority levels that are not known to be suspended.
+  // 已知尚未暂停的最早和最新优先级
   earliestPendingTime: ExpirationTime,
   latestPendingTime: ExpirationTime,
   // The latest priority level that was pinged by a resolved promise and can
@@ -64,6 +71,7 @@ type BaseFiberRootProperties = {|
 
   pendingCommitExpirationTime: ExpirationTime,
   // A finished work-in-progress HostRoot that's ready to be committed.
+  // 已完成的工作正在进行中主机根，准备提交
   finishedWork: Fiber | null,
   // Timeout handle returned by setTimeout. Used to cancel a pending timeout, if
   // it's superseded by a new one.
@@ -106,12 +114,14 @@ export type FiberRoot = {
 };
 
 export function createFiberRoot(
-  containerInfo: any,
+  containerInfo: any, // containerInfo就是ReactDOM.render(<div/>, containerInfo)的第二个对象，换言之是一个元素节点
   isConcurrent: boolean,
   hydrate: boolean,
 ): FiberRoot {
   // Cyclic construction. This cheats the type system right now because
   // stateNode is any.
+
+  // 这个循环构造现在欺骗了类型系统，因为状态节点是任意的
   const uninitializedFiber = createHostRootFiber(isConcurrent);
 
   let root;
